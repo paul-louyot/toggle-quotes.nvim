@@ -28,6 +28,11 @@ local keymap = vim.api.nvim_set_keymap
 keymap("n", "Q", ":lua require('toggle-quotes').toggle_quotes()<cr>", opts)
 ```
 
+### TODO
+
+- Toggle also between backticks for these languages: Typescript, JavaScript, Markdown, Go, Svelte
+- Escape simple quotes when needed
+
 ### Inspiration
 
 This plugin takes inspiration from [this VS Code plugin](https://marketplace.visualstudio.com/items?itemName=BriteSnow.vscode-toggle-quotes)
