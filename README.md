@@ -19,15 +19,6 @@ From the vim command line:
 :ToggleQuotes
 ```
 
-### Keybinding
-
-Add this to one of your lua config file:
-```lua
-local opts = { noremap = true, silent = true }
-local keymap = vim.api.nvim_set_keymap
-keymap("n", "Q", ":lua require('toggle-quotes').toggle_quotes()<cr>", opts)
-```
-
 ### TODO
 
 - Toggle also between backticks for these languages: Typescript, JavaScript, Markdown, Go, Svelte
