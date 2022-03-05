@@ -3,25 +3,19 @@ local M = {}
 local quotes = {"'", "\""} -- TODO: add backticks for some files
 local indexes_list = {}
 
-local function getIndexes(line, substring)
+local function get_indexes(line, substring)
   local indexes_list = {}
   local index = 0
   while index do
     index = string.find(line, substring, index + 1)
-    if index then
+    if index and ((line:sub(index-1, index-1) ~= '\\') or (line:sub(index-2, index-2) == '\\')) then
       indexes_list[#indexes_list+1] = index
     end
   end
   return indexes_list
 end
 
-local function shouldToggle()
-  local should_toggle = (#double_quotes_indexes_list == 0 and #simple_quotes_indexes_list == 2) or
-                        (#simple_quotes_indexes_list == 0 and #double_quotes_indexes_list == 2)
-  return should_toggle
-end
-
-function get_first_quote_info(indexes_list)
+local function get_first_quote_info(indexes_list)
   local start = nil
   local char = nil
   local table = {}
@@ -39,7 +33,7 @@ function get_first_quote_info(indexes_list)
   return table
 end
 
-function get_first_pair(indexes_list)
+local function get_first_pair(indexes_list)
   local pair = {}
   local first_quote_info = get_first_quote_info(indexes_list)
 
@@ -51,7 +45,7 @@ function get_first_pair(indexes_list)
   return pair
 end
 
-function get_next_quote(quote)
+local function get_next_quote(quote)
   -- TODO: generate this from quotes variable
   local table = {}
   table['"'] = "'"
@@ -59,18 +53,23 @@ function get_next_quote(quote)
   return table[quote]
 end
 
-function toggle_pair(line, start, stop)
-  local quote = line:sub(start, start)
-  local next_quote = get_next_quote(quote)
-  local quoted_text = line:sub(start, stop)
-  local new_quoted_text = string.gsub(quoted_text, quote, next_quote)
-  local new_line = string.gsub(line, quoted_text, new_quoted_text)
+local function toggle_pair(line, start, stop)
+  local quote, next_quote, quoted_text, inner_text, new_inner_text, new_quoted_text, new_line
+
+  quote = line:sub(start, start)
+  next_quote = get_next_quote(quote)
+  quoted_text = line:sub(start, stop)
+  inner_text = line:sub(start + 1, stop - 1)
+  new_inner_text = string.gsub(inner_text, '\\' .. quote, quote)
+  new_inner_text = string.gsub(new_inner_text, next_quote, '\\' .. next_quote)
+  new_quoted_text = next_quote .. new_inner_text .. next_quote
+  new_line = string.gsub(line, quoted_text, new_quoted_text)
   return new_line
 end
 
-function M.get_new_line(line)
+local function get_new_line(line)
   for i, quote in ipairs(quotes) do
-    indexes_list[quote] = getIndexes(line, quote)
+    indexes_list[quote] = get_indexes(line, quote)
   end
   local first_pair = get_first_pair(indexes_list)
 
@@ -79,5 +78,7 @@ function M.get_new_line(line)
   local new_line = toggle_pair(line, first_pair.start, first_pair.stop)
   return new_line
 end
+
+M.get_new_line = get_new_line
 
 return M
