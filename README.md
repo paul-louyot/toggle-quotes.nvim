@@ -16,7 +16,7 @@ use 'paul-louyot/toggle-quotes.nvim'
 
 From the vim command line:
 ```
-lua require('toggle-quotes').toggle_quotes()
+:ToggleQuotes
 ```
 
 ### Keybinding
