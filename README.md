@@ -22,7 +22,6 @@ From the vim command line:
 ### TODO
 
 - Toggle also between backticks for these languages: Typescript, JavaScript, Markdown, Go, Svelte
-- Escape simple quotes when needed
 
 ### Inspiration
 
