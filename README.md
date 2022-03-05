@@ -19,6 +19,15 @@ From the vim command line:
 lua require('toggle-quotes').toggle_quotes()
 ```
 
+### Keybinding
+
+Add this to one of your lua config file:
+```lua
+local opts = { noremap = true, silent = true }
+local keymap = vim.api.nvim_set_keymap
+keymap("n", "Q", ":lua require('toggle-quotes').toggle_quotes()<cr>", opts)
+```
+
 ### Inspiration
 
 This plugin takes inspiration from [this VS Code plugin](https://marketplace.visualstudio.com/items?itemName=BriteSnow.vscode-toggle-quotes)
