@@ -1,7 +1,24 @@
 local M = {}
 
-local quotes = {"'", "\""} -- TODO: add backticks for some files
 local indexes_list = {}
+
+local function should_handle_backticks(filetype)
+  filetypes = {}
+  filetypes["javascript"] = true
+  filetypes["typescript"] = true
+  filetypes["go"] = true
+  filetypes["markdown"] = true
+  filetypes["svelte"] = true
+  return (filetypes[filetype] ~= nil)
+end
+
+local function get_quotes_list()
+  local quotes = {"'", "\""}
+  if should_handle_backticks(vim.bo.filetype) then
+    table.insert(quotes, "`")
+  end
+  return quotes
+end
 
 local function get_indexes(line, substring)
   local indexes_list = {}
@@ -46,10 +63,11 @@ local function get_first_pair(indexes_list)
 end
 
 local function get_next_quote(quote)
-  -- TODO: generate this from quotes variable
+  local quotes = get_quotes_list()
   local table = {}
-  table['"'] = "'"
-  table["'"] = '"'
+  for i, v in ipairs(quotes) do
+    table[v] = ( i ~= #quotes and quotes[i+1] or quotes[1])
+  end
   return table[quote]
 end
 
@@ -68,6 +86,7 @@ local function toggle_pair(line, start, stop)
 end
 
 local function get_new_line(line)
+  local quotes = get_quotes_list()
   for i, quote in ipairs(quotes) do
     indexes_list[quote] = get_indexes(line, quote)
   end
@@ -80,5 +99,6 @@ local function get_new_line(line)
 end
 
 M.get_new_line = get_new_line
+M.should_handle_backticks = should_handle_backticks
 
 return M

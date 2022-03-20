@@ -5,10 +5,18 @@ local util = require("lua.util")
 
 function assert_equal(expected, actual)
   if expected ~= actual then
-    error('\nexpected: ' .. expected  .. '\n' .. 'actual: ' .. actual)
+    print("actual: ", actual)
+    print("expected: ", expected)
+    error('Test failed.')
   end
 end
 
+assert_equal(true, util.should_handle_backticks('javascript'))
+assert_equal(true, util.should_handle_backticks('go'))
+assert_equal(true, util.should_handle_backticks('typescript'))
+assert_equal(true, util.should_handle_backticks('markdown'))
+assert_equal(true, util.should_handle_backticks('svelte'))
+assert_equal(false, util.should_handle_backticks('ruby'))
 assert_equal([['']], util.get_new_line([[""]]))
 assert_equal([[""]], util.get_new_line([['']]))
 assert_equal([[]], util.get_new_line([[]]))
