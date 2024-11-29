@@ -8,7 +8,7 @@ function M.toggle_quotes()
   local row = cursor_0[1]
   local col = cursor_0[2]
   local line = vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1]
-  local new_line = util.get_new_line(line)
+  local new_line = util.toggle_quotes(line)
 
   vim.api.nvim_buf_set_lines(0, row - 1, row, false, { new_line })
 end

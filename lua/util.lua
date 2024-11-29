@@ -67,7 +67,7 @@ local function toggle_pair(line, start, stop)
   return new_line
 end
 
-local function get_new_line(line)
+local function toggle_quotes(line)
   for i, quote in ipairs(quotes) do
     indexes_list[quote] = get_indexes(line, quote)
   end
@@ -79,6 +79,6 @@ local function get_new_line(line)
   return new_line
 end
 
-M.get_new_line = get_new_line
+M.toggle_quotes = toggle_quotes
 
 return M

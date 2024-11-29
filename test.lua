@@ -9,11 +9,11 @@ function assert_equal(expected, actual)
   end
 end
 
-assert_equal([['']], util.get_new_line([[""]]))
-assert_equal([[""]], util.get_new_line([['']]))
-assert_equal([[]], util.get_new_line([[]]))
-assert_equal('"test"', util.get_new_line("'test'"))
-assert_equal("'test'", util.get_new_line('"test"'))
-assert_equal([['te\'st']], util.get_new_line([["te'st"]]))
-assert_equal([["te'st"]], util.get_new_line([['te\'st']]))
+assert_equal([['']], util.toggle_quotes([[""]]))
+assert_equal([[""]], util.toggle_quotes([['']]))
+assert_equal([[]], util.toggle_quotes([[]]))
+assert_equal('"test"', util.toggle_quotes("'test'"))
+assert_equal("'test'", util.toggle_quotes('"test"'))
+assert_equal([['te\'st']], util.toggle_quotes([["te'st"]]))
+assert_equal([["te'st"]], util.toggle_quotes([['te\'st']]))
 print('Tests are green')
